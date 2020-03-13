@@ -59,14 +59,6 @@ $formData["fileName"] = $fileName;
 $raw_data = file_get_contents($_FILES['adImg']['tmp_name']);
 $formData["raw_data"] = $raw_data;
 
-// header('Content-type: image/jpeg');
-// echo $raw_data;
-
-// echo "<pre>";
-// var_dump($formData);
-// echo "</pre>";
-// exit;
-
 $AdDB = new AdDB\AdDB();
 $AdDB->insertAd($formData);
 

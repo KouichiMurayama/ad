@@ -6,7 +6,6 @@
 require "AdDB.php";
 use VC\AdDB as AdDB;
 $AdDB = new AdDB\AdDB();
-
 ?>
 <!DOCTYPE html>
 <meta charset="utf-8">
@@ -76,10 +75,7 @@ $AdDB = new AdDB\AdDB();
         'gif' => 'image/gif'
       );
       foreach($list as $row) {
-        // header( "Content-Type: ".$MIMETypes[$row["extension"]] );
-        // echo $row['IMG_DATA'];
         $img = base64_encode($row['IMG_DATA']);
-        // $img =$row['IMG_DATA'];
         $mine = $MIMETypes[$row["EXTENSION"]];
         echo '<tr>';
           echo '<td>'.$row["OID"].'</td>';
@@ -91,7 +87,7 @@ $AdDB = new AdDB\AdDB();
           echo '<td>'.$row["EXTENSION"].'</td>';
           echo '<td>'.$row["INS_DATE"].'</td>';
           echo '<td>'.$row["UPD_DATE"].'</td>';
-          echo '<td><img src="data:' .$mine. ';base64,'. $img . '"/></td>';
+          echo '<td><img width="100" src="data:' .$mine. ';base64,'. $img . '"/></td>';
         echo '</tr>';
       }
       ?>

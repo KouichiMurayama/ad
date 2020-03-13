@@ -19,7 +19,7 @@ request.responseType = 'json';
 request.onload = function () {
     var data = this.response;
     if ( data ) {
-        h = '<a href="' +data.URL+'">'+data.NAME+'</a>';
+        h = '<a href="redirector.php?link=' +data.URL+';"><img src="data:'+data.MIME+';base64,'+data.IMG_DATA+'"></a>';
     } else {
         h = '<a href="#>広告の表示ができません</a>';
     }

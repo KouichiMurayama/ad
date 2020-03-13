@@ -25,7 +25,7 @@ class AdDB {
     }
 
     /**
-     * 広告情報取得
+     * 広告情報取得(API用)
      * return array
      */
     public function fetchAd( $pid ) {
@@ -39,6 +39,15 @@ class AdDB {
             $org_data[] = $row;
         }
         $data = $org_data[0];
+        // 画像出力の際に必要なMIME
+        $MIMETypes = array(
+            'png' => 'image/png',
+            'jpeg' => 'image/jpeg',
+            'gif' => 'image/gif'
+          );
+        $data["MIME"] = $MIMETypes[$data["EXTENSION"]];
+        // 出力のためのbase64エンコード
+        $data["IMG_DATA"] = base64_encode($data['IMG_DATA']);
         $stmt->close();
 
         return $data;
