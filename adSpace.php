@@ -10,6 +10,7 @@ $AdDB = new AdDB\AdDB();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+<meta charset="utf-8">
   <head>
     <title>広告枠作成画面</title>
   </head>

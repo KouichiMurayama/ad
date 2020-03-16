@@ -11,10 +11,12 @@ class AdDB {
 
         $this->con = mysqli_connect($host, $user, $pass, $dbname);
         if ( mysqli_connect_errno() ) {
-            // 終了条件をパターンごとにわける？
+            // TODO:データベース接続失敗時エラー
             error_log("データベースに接続失敗". mysqli_connect_error() . "\n");
             return 1;
         }
+
+        return;
     }
 
     public function __destruct() {
@@ -22,68 +24,71 @@ class AdDB {
         } else {
             mysqli_close($this->con);
         }
+
+        return;
     }
 
     /**
-     * 広告情報取得(API用)
+     * 広告情報全件取得
      * return array
      */
-    public function fetchAd( $pid ) {
-        $stmt = $this->con->stmt_init();
-        $query = 'SELECT * FROM AD_SPACE, AD WHERE AD_SPACE.OID = ? AND AD.OID = AD_SPACE.ADID';
-        $stmt->prepare($query);
-        $stmt->bind_param("i", $pid);
-        $stmt->execute(); 
-        $result = $stmt->get_result();
-        foreach ( $result as $row ) {
-            $org_data[] = $row;
-        }
-        $data = $org_data[0];
-        // 画像出力の際に必要なMIME
-        $MIMETypes = array(
-            'png' => 'image/png',
-            'jpeg' => 'image/jpeg',
-            'gif' => 'image/gif'
-          );
-        $data["MIME"] = $MIMETypes[$data["EXTENSION"]];
-        // 出力のためのbase64エンコード
-        $data["IMG_DATA"] = base64_encode($data['IMG_DATA']);
-        $stmt->close();
+    public function fetchAd()
+    {
+        $query = 'SELECT AD_SPACE.OID, AD_SPACE.ASID, AD_SPACE.ADID, AD.URL, AD.IMG_NAME, AD.EXTENSION, AD.IMG_DATA FROM AD_SPACE, AD WHERE AD.OID = AD_SPACE.ADID';
+        if ( $result = mysqli_query($this->con, $query) ) {
+            foreach ( $result as $row ) {
+                $data[] = $row;
+            }
 
-        return $data;
+            return $data;
+        } else {
+            // TODO: データ取得失敗時のエラー
+            exit;
+        }
     }
     /**
      * 広告スペース作成
      */
-    public function insertAdSpace( $formData ) {
-        $stmt = $this->con->stmt_init();
-        $query = "INSERT INTO AD_SPACE VALUES(null, 'Y', ?, ?, now(), now())";
-        $stmt->prepare($query);
-        $stmt->bind_param("ii", $formData["adId"], $formData["asId"]);
-        $stmt->execute(); 
-        $result = $stmt->get_result();
-        $stmt->close();
+    public function insertAdSpace( $formData )
+    {
+        try {
+            $stmt = $this->con->stmt_init();
+            $query = "INSERT INTO AD_SPACE VALUES(null, 'Y', ?, ?, now(), now())";
+            $stmt->prepare($query);
+            $stmt->bind_param("ii", $formData["adId"], $formData["asId"]);
+            $stmt->execute(); 
+            $result = $stmt->get_result();
+            $stmt->close();
 
-        return;
+            return;
+        } catch(Exception $e) {
+
+        }
     }
     /**
      * 広告作成
      */
-    public function insertAd( $formData ) {
-        $stmt = $this->con->stmt_init();
-        $query = "INSERT INTO AD VALUES(null, 'Y', ?, ?, ?, ?, ?, ?, now(), now())";
-        $stmt->prepare($query);
-        $stmt->bind_param("isssss", $formData["ecId"], $formData["adName"], $formData["adUrl"], $formData["fileName"], $formData["extension"], $formData["raw_data"]);
-        $stmt->execute(); 
-        $result = $stmt->get_result();
-        $stmt->close();
+    public function insertAd( $formData )
+    {
+        try {
+            $stmt = $this->con->stmt_init();
+            $query = "INSERT INTO AD VALUES(null, 'Y', ?, ?, ?, ?, ?, ?, now(), now())";
+            $stmt->prepare($query);
+            $stmt->bind_param("isssss", $formData["ecId"], $formData["adName"], $formData["adUrl"], $formData["fileName"], $formData["extension"], $formData["raw_data"]);
+            $stmt->execute(); 
+            $result = $stmt->get_result();
+            $stmt->close();
 
-        return;
+            return;
+        } catch(Exception $e) {
+
+        }
     }
     /**
      * 広告一覧取得（広告入稿画面）
      */
-    public function adList() {
+    public function adList()
+    {
         $query = "SELECT * FROM AD";
         if ( $result = mysqli_query( $this->con, $query) ) {
             foreach ( $result as $row ) {
@@ -93,7 +98,12 @@ class AdDB {
 
         return $data;
     }
-    public function imgList() {
+
+    /**
+     * 
+     */
+    public function imgList()
+    {
         $query = "SELECT IMG_DATA FROM AD";
         if ( $result = mysqli_query( $this->con, $query) ) {
             foreach ( $result as $row ) {
@@ -103,10 +113,12 @@ class AdDB {
 
         return $data;
     }
+
     /**
      * 広告枠一覧取得（広告枠作成画面)
      */
-    public function adSpaceList() {
+    public function adSpaceList()
+    {
         $query = "SELECT * FROM AD_SPACE";
         if ( $result = mysqli_query($this->con, $query) ) {
             foreach ( $result as $row ) {
@@ -116,6 +128,7 @@ class AdDB {
 
         return $data;
     }
+
     /**
      * ECサイト一覧取得(フォーム用)
      */
@@ -129,6 +142,7 @@ class AdDB {
 
         return $data;
     }
+
     /**
      * ASサイト一覧取得(フォーム用)
      */

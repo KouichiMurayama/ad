@@ -54,8 +54,6 @@ CREATE TABLE AD(
     FOREIGN KEY (ECID) REFERENCES EC_SITE(OID)
 )AUTO_INCREMENT = 300;
 
-INSERT INTO AD VALUES(null,'Y',100,'Adsample300', 'URLsample1', 'sampleImgName', "jpg", null, now(), now());
-INSERT INTO AD VALUES(null,'Y',101,'Adsample301', 'URLsample2', 'sampleImg02', now(), now());
 
 CREATE TABLE AD_SPACE (
     OID INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -68,5 +66,7 @@ CREATE TABLE AD_SPACE (
     FOREIGN KEY (ASID) REFERENCES AFFIL_SITE(OID)
 )AUTO_INCREMENT = 400;
 
-INSERT INTO AD_SPACE VALUES(null, 'Y', 300, 200, now(), now());
-INSERT INTO AD_SPACE VALUES(null, 'Y', 301, 201, now(), now());
+-- INSERT INTO AD VALUES(null,'Y',100,'Adsample300', 'URLsample1', 'sampleImgName', "jpg", null, now(), now());
+-- INSERT INTO AD VALUES(null,'Y',101,'Adsample301', 'URLsample2', 'sampleImg02', now(), now());
+-- INSERT INTO AD_SPACE VALUES(null, 'Y', 300, 200, now(), now());
+-- INSERT INTO AD_SPACE VALUES(null, 'Y', 301, 201, now(), now());

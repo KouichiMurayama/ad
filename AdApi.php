@@ -1,22 +1,20 @@
 <?php
-require "AdDB.php";
-use VC\AdDB as AdDB;
-/**
- * 取得したIDから対応した広告情報を返す
- * json形式
- */
-// phpinfo();
-$pid;
+namespace VC\AdApi;
+
+require "bdb.php";
+use VC\Bdb as Bdb;
+
 // IDの取得 IDがない場合は終了
 if( isset($_GET['pid']) && $_GET['pid'] != 0 ) {
     $pid = $_GET['pid'];
 } else {
+    // pidが取得できない場合のエラー
     exit;
 }
 
-$AdDB = new AdDB\AdDB();
-// IDをもとにDBから広告情報を取得
-$data = $AdDB->fetchAd($pid);
+$bdb = new Bdb\Bdb();
+// TODO: 値を取得できない場合のエラー
+$json = $bdb->fetchValue($pid);
 
-header('Access-Control-Allow-Origin:*');
-echo json_encode($data);
+header('content-type: application/json; charset=utf-8');
+echo $json;

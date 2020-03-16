@@ -7,6 +7,7 @@
 <!-- html -->
 <!DOCTYPE html>
 <html lang="ja">
+<meta charset="utf-8">
   <head>
     <title>広告配信test画面</title>
   </head>

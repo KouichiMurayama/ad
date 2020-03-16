@@ -8,8 +8,8 @@ use VC\AdDB as AdDB;
 $AdDB = new AdDB\AdDB();
 ?>
 <!DOCTYPE html>
-<meta charset="utf-8">
 <html lang="ja">
+<meta charset="utf-8">
   <head>
     <title>広告入稿画面</title>
   </head>
