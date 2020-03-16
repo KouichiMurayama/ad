@@ -5,7 +5,7 @@ class Bdb
 {
     public function __construct()
     {
-        $db = "bdb.db";
+        $db = "/var/www/html/vc/bdb.db";
         $this->id = dba_open($db, "r", "db4");
         if (!$this->id) {
             echo "dba_open failed\n";

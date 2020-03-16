@@ -1,7 +1,7 @@
 <?php
 namespace VC\AdApi;
 
-require "bdb.php";
+require "/var/www/html/vc/bdb.php";
 use VC\Bdb as Bdb;
 
 // IDの取得 IDがない場合は終了
