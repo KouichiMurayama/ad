@@ -14,5 +14,4 @@ if($id) {
     error_log( "BDBオープンエラー", 0);
 }
 
-
 dba_close($id);
