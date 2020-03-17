@@ -13,29 +13,36 @@ for ( var i = 0; i < parameters.length; i++ )
     result[ paramName ] = paramValue;
 }
 pid = result['pid'];
-// pid = null
+sid = result['sid'];
+// pidが取得できない場合は広告を表示しない
 if ( pid ) {
     var data;
-    var url ='http://192.168.33.10/vc/api/AdApi.php?pid=';
+    var url = 'http://192.168.33.10/vc/api/AdApi.php?pid=';
     var request = new XMLHttpRequest();
     request.open('GET', url+pid, true);
     request.responseType = 'json';
     request.onload = function () {
         var data = this.response;
+        // APIから広告情報を取得することができなかった場合は表示しない
         if ( data ) {
-            h = '<a href="redirector.php?link=' +data.URL+';"><img src="data:'+data.MIME+';base64,'+data.IMG_DATA+'"></a>';
+            // APIから取得してきた情報とタグのSIDが異なる場合は広告を表示しない
+            if ( data.ASID == sid ) {
+                h = '<a href="redirector.php?pid=' +data.OID+'&asid='+data.ASID+'&adid='+data.ADID+'&url='+data.URL+';"><img src="data:'+data.MIME+';base64,'+data.IMG_DATA+'"></a>';
+            } else {
+                h = '<a href="#">広告の表示ができません</a>';
+            }
         } else {
-            // 広告情報が取得できない場合
-            h = '<a href="#>広告の表示ができません</a>';
+            h = '<a href="#">広告の表示ができません</a>';
+            console.log(1);
         }
         adTag.innerHTML = h;
         // TODO:デバッグ用json確認 後で消す
         console.log(data);
+        // console.log(result);
     }
     request.send();
 
 } else {
-    // pidが取得できなかった際の処理
-    h = '<a href="#>広告情報が正しくないため表示できません</a>';
+    h = '<a href="#">広告の表示ができません</a>';
     adTag.innerHTML = h;
 }
