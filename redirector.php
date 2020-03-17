@@ -11,6 +11,8 @@
  */
 $link =  $_GET["link"];
 echo $_GET["link"];
+setcookie("testCookie", "cookieValue", 43200);
+echo $_COOKIE["testCookie"];
 
 // ここで遷移させる
-header('Location: '.$link);
+// header('Location: '.$link);
