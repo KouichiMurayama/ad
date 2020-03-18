@@ -10,18 +10,18 @@ class AdDB {
         $dbname = "VCAD";
 
         $this->con = mysqli_connect($host, $user, $pass, $dbname);
-        if ( mysqli_connect_errno() ) {
+        if ( !mysqli_connect_errno() ) {
             // TODO:データベース接続失敗時エラー
-            error_log("データベースに接続失敗". mysqli_connect_error() . "\n");
-            return 1;
+            error_log("database connect error". mysqli_connect_error() . "\n");
+            echo "データベースに接続できませんでした";
+            return;
         }
 
         return;
     }
 
     public function __destruct() {
-        if ( mysqli_connect_errno() ) {
-        } else {
+        if ( !mysqli_connect_errno() ) {
             mysqli_close($this->con);
         }
 
@@ -42,7 +42,7 @@ class AdDB {
 
             return $data;
         } else {
-            // TODO: データ取得失敗時のエラー
+            error_log("database fetchAd() error". mysqli_connect_error() . "\n");
             exit;
         }
     }
@@ -62,7 +62,8 @@ class AdDB {
 
             return;
         } catch(Exception $e) {
-
+            error_log($e->getMessage());
+            exit;
         }
     }
     /**
@@ -81,7 +82,8 @@ class AdDB {
 
             return;
         } catch(Exception $e) {
-
+            error_log($e->getMessage());
+            exit;
         }
     }
     /**
@@ -94,6 +96,9 @@ class AdDB {
             foreach ( $result as $row ) {
                 $data[] = $row;
             }
+        } else {
+            error_log("database adList() error");
+            exit;
         }
 
         return $data;
@@ -109,6 +114,9 @@ class AdDB {
             foreach ( $result as $row ) {
                 $data[] = $row;
             }
+        } else {
+            error_log("database imgList() error");
+            exit;
         }
 
         return $data;
@@ -124,6 +132,9 @@ class AdDB {
             foreach ( $result as $row ) {
                 $data[] = $row;
             }
+        } else {
+            error_log("database adSpaceList() error");
+            exit;
         }
 
         return $data;
@@ -138,6 +149,9 @@ class AdDB {
             foreach ( $result as $row ) {
                 $data[] = $row;
             }
+        } else {
+            error_log("database ecList() error");
+            exit;
         }
 
         return $data;
@@ -152,6 +166,9 @@ class AdDB {
             foreach ( $result as $row ) {
                 $data[] = $row;
             }
+        } else {
+            error_log("database asList() error");
+            exit;
         }
 
         return $data;
